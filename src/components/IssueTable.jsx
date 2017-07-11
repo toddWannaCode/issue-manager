@@ -1,3 +1,4 @@
+import React from 'react';
 import IssueRow from './IssueRow.jsx';
 
 const IssueTable =({issues}) => {
