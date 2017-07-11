@@ -1,4 +1,4 @@
-import IssueRow from './IssueRow';
+import IssueRow from './IssueRow.jsx';
 
 const IssueTable =({issues}) => {
     const issueRows = issues.map(
