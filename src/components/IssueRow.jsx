@@ -1,4 +1,4 @@
-export const IssueRow = ({issue}) => {
+const IssueRow = ({issue}) => {
     const borderedStyle = {border: "1px solid silver", padding: 4};
     return (
         <tr>
@@ -13,3 +13,5 @@ export const IssueRow = ({issue}) => {
         </tr>
     )
 };
+
+export default IssueRow;
