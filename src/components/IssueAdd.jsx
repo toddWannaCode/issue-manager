@@ -12,7 +12,6 @@ export default class IssueAdd extends React.Component {
     }
 
     handleSubmit(e) {
-        e.preventDefault();
         var form = document.forms.issueAdd;
         this.props.createIssue({
         owner: form.owner.value,

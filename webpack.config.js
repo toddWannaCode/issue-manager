@@ -5,7 +5,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: {
     app: './src/App.jsx',
-    vendor: ['babel-polyfill', 'react', 'react-dom', 'whatwg-fetch', 'react-router-dom'],
+    vendor: ['babel-polyfill', 'react', 'react-dom', 'whatwg-fetch', 'react-router-dom', 'query-string', 'moment'],
   },
   devServer: {
     hot: true,
@@ -40,6 +40,9 @@ module.exports = {
         test: /\.jsx$/,
         loader: 'babel-loader',
       },
+      { 
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"] }
     ],
   },
 };

@@ -12,7 +12,6 @@ module.exports = async function validateIssue(ctx, next) {
     status: 'required',
     owner: 'required',
     effort: 'optional',
-    created: 'required',
     completionDate: 'optional',
     title: 'required',
   };

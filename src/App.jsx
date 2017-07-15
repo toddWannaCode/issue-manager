@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter } from 'react-router-dom';
 
 const content = document.getElementById('contents')
 import IssueList from './components/IssueList.jsx';
+import IssueEdit from './components/IssueEdit.jsx';
 
 const Home = () => <div><h1>Home</h1></div>
 
@@ -60,10 +61,12 @@ const RoutedApp = () => (
             <Switch>
                 <Redirect exact from="/" to="/home"/>
                 <Route path="/home" exact component={Home}/>
-                <Route path="/issues" component={IssueList}/>
+                <Route exact path="/issues" component={withRouter(IssueList)}/>
+                <Route path="/issues/:id" component={IssueEdit}/>
                 <Route path="/topics" component={Topics}/>
                 <Route path="*" exact render={() => <h3>No match</h3>}/>
             </Switch>
+            <footer>Test</footer>
         </div>
     </Router>
 )

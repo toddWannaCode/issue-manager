@@ -3,6 +3,7 @@ import IssueAdd from './IssueAdd.jsx';
 import IssueFilter from './IssueFilter.jsx';
 import React from 'react';
 import 'whatwg-fetch';
+import queryString from 'query-string';
 
 export default class IssueList extends React.Component {
     constructor() {
@@ -10,12 +11,12 @@ export default class IssueList extends React.Component {
         this.state = { issues: []};
     }
 
-    fillDates(issue) {
-        issue.created = new Date(issue.created)
-        if (issue.completionDate)
-            issue.completionDate = new Date(issue.completionDate);
-        return issue
-    }
+    // fillDates(issue) {
+    //     issue.created = new Date(issue.created)
+    //     if (issue.completionDate)
+    //         issue.completionDate = new Date(issue.completionDate);
+    //     return issue
+    // }
 
     createIssue(newIssue) {
         fetch('/api/issues', {
@@ -27,8 +28,6 @@ export default class IssueList extends React.Component {
             .then(async data => {
                 const newIssue = await data[1]
                 if(data[0]){
-                    console.log(newIssue)
-                    const issue = this.fillDates(newIssue)
                     this.setState({ issues: this.state.issues.concat(issue)})
                 }
                 else {
@@ -39,11 +38,10 @@ export default class IssueList extends React.Component {
     }
     
     loadData() {
-        fetch('/api/issues')
+        fetch(`/api/issues${this.props.location.search}`)
             .then(res => res.json())
             .then(data => {
-                console.log("total count of records:", data._metadata.total_count, data);
-                const issues = data.records.map(issue => this.fillDates(issue))  
+                const issues = data.records; 
                 this.setState({ issues: issues })
             })
             .catch(err => console.log(err))
@@ -53,11 +51,22 @@ export default class IssueList extends React.Component {
         this.loadData();
     }
 
+    componentDidUpdate({location}) {
+        const newQuery = this.props.location.search;
+        const oldQuery = location.search;
+        if (oldQuery === newQuery) {
+            return;
+        }
+        this.loadData();
+    }
+
     render() {
         return (
           <div>
             <h1>Issue Tracker</h1>
-            <IssueFilter />
+            <IssueFilter setSearchString={(search) => {
+                this.props.history.push({pathname: this.props.location.pathname, search: queryString.stringify(search)});
+                }} initFilter={queryString.parse(this.props.location.search)}/>
             <hr />
             <IssueTable issues={this.state.issues} />
             <hr />
@@ -66,3 +75,7 @@ export default class IssueList extends React.Component {
         );
     }
 }
+
+IssueList.propTypes = {
+  location: React.PropTypes.object.isRequired,
+};
